@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: transparent;
+            text-align: center;
+            margin: 20px;
+            color: black; /* Default text color */
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        input, button {
+            padding: 8px;
+            margin: 5px;
+            color: #333; /* Default text color for input and button */
+            background-color: #fff; /* Default background color for input and button */
+            border: 1px solid #333; /* Default border color for input and button */
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #generatedPassword {
+            margin-top: 20px;
+            font-size: 18px;
+            color: black; /* Result password text color */
+        }
+
+        #copyButton {
+            background-color: #008CBA;
+            color: white;
+            border: 1px solid #0073a8; /* Border color for the copy button */
+            padding: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #copyButton:hover {
+            background-color: #0073a8;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <label for="passwordLength">Password Length:</label>
+    <input type="number" id="passwordLength" value="12" min="6" max="30">
+
+    <br>
+
+    <label for="includeUppercase">Include Uppercase Letters:</label>
+    <input type="checkbox" id="includeUppercase" checked>
+
+    <br>
+
+    <label for="includeLowercase">Include Lowercase Letters:</label>
+    <input type="checkbox" id="includeLowercase" checked>
+
+    <br>
+
+    <label for="includeNumbers">Include Numbers:</label>
+    <input type="checkbox" id="includeNumbers" checked>
+
+    <br>
+
+    <label for="includeSpecialChars">Include Special Characters:</label>
+    <input type="checkbox" id="includeSpecialChars" checked>
+
+    <br>
+
+    <button onclick="generatePassword()">Generate Password</button>
+
+    <p id="generatedPassword"></p>
+
+    <button id="copyButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+
+    <script>
+        function generatePassword() {
+            const length = document.getElementById('passwordLength').value;
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSpecialChars = document.getElementById('includeSpecialChars').checked;
+
+            const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            const numberChars = '0123456789';
+            const specialChars = '!@#$%^&*()-=_+[]{}|;:,.<>?';
+
+            let allChars = '';
+
+            if (includeUppercase) allChars += uppercaseChars;
+            if (includeLowercase) allChars += lowercaseChars;
+            if (includeNumbers) allChars += numberChars;
+            if (includeSpecialChars) allChars += specialChars;
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * allChars.length);
+                password += allChars.charAt(randomIndex);
+            }
+
+            document.getElementById('generatedPassword').textContent = password;
+        }
+
+        function copyToClipboard() {
+            const generatedPassword = document.getElementById('generatedPassword');
+            const textarea = document.createElement('textarea');
+            textarea.value = generatedPassword.textContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Password copied to clipboard!');
+        }
+    </script>
+
+</body>
+</html>
